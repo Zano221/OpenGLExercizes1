@@ -26,6 +26,7 @@ public:
 	void DrawCube();
 	void DrawPyramid();
 	void DrawHouse(float size_house);
+	void DrawCubao();
 
 private:
 

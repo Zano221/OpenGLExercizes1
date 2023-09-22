@@ -108,7 +108,7 @@ int CScene3::DrawGLScene(void)	// Função que desenha a cena
 	Draw3DSGrid(20.0f, 20.0f);
 
 	// Desenha os eixos do sistema cartesiano
-	DrawAxis();
+	//DrawAxis();
 
 	// Modo FILL ou WIREFRAME (pressione barra de espaço)	
 	if (bIsWireframe)
@@ -145,8 +145,18 @@ int CScene3::DrawGLScene(void)	// Função que desenha a cena
 
 	glPushMatrix();
 		glTranslatef(5.0f, 0.5f, 7.0f);
-		pTextures->ApplyTexture(31);
+		pTextures->ApplyTexture(0);
 		DrawCube();
+
+		glTranslatef(1.0f, 0.0f, -1.0f);
+		glRotatef(40.0f, 0.0f, 1.0f, 0.0f);
+		DrawCube();
+		glTranslatef(0.0f, 1.0f, 0.0f);
+		DrawCube();
+		glRotatef(-40.0f, 0.0f, 1.0f, 0.0f);
+		glTranslatef(1.0f, -1.0f, 1.0f);
+		DrawCubao();
+
 	glPopMatrix();
 
 	glDisable(GL_TEXTURE_2D);
@@ -553,5 +563,47 @@ void CScene3::DrawHouse(float size_house) {
 		glTexCoord2f(1.0f, 0.0f); glVertex3f(1.7f * size_house, 1.5f * size_house, 0.0f * size_house);
 		glTexCoord2f(1.0f, 1.0f); glVertex3f(1.7f * size_house, 0.9f * size_house, -1.2f * size_house);
 		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.7f * size_house, 0.9f * size_house, -1.2f * size_house);
+	glEnd();
+}
+
+void CScene3::DrawCubao()
+{
+	glBegin(GL_QUADS);
+	// face frente
+	glTexCoord2d(0.0f, 0.0f); glVertex3f(-0.5f, -0.5f, 0.5f);
+	glTexCoord2d(1.0f, 0.0f); glVertex3f(0.5f, -0.5f, 0.5f);
+	glTexCoord2d(1.0f, 1.0f); glVertex3f(0.5f, 2.0f, 0.5f);
+	glTexCoord2d(0.0f, 1.0f); glVertex3f(-0.5f, 2.0f, 0.5f);
+
+	// face trás
+	glTexCoord2d(0.0f, 0.0f); glVertex3f(0.5f, -0.5f, -0.5f);
+	glTexCoord2d(0.0f, 1.0f); glVertex3f(-0.5f, -0.5f, -0.5f);
+	glTexCoord2d(1.0f, 1.0f); glVertex3f(-0.5f, 2.0f, -0.5f);
+	glTexCoord2d(1.0f, 0.0f); glVertex3f(0.5f, 2.0f, -0.5f);
+
+	// face direita
+	glTexCoord2d(0.0f, 0.0f); glVertex3f(0.5f, -0.5f, 0.5f);
+	glTexCoord2d(0.0f, 1.0f); glVertex3f(0.5f, -0.5f, -0.5f);
+	glTexCoord2d(1.0f, 1.0f); glVertex3f(0.5f, 2.0f, -0.5f);
+	glTexCoord2d(1.0f, 0.0f); glVertex3f(0.5f, 2.0f, 0.5f);
+
+	// face esquerda
+	glTexCoord2d(0.0f, 0.0f); glVertex3f(-0.5f, -0.5f, -0.5f);
+	glTexCoord2d(0.0f, 1.0f); glVertex3f(-0.5f, -0.5f, 0.5f);
+	glTexCoord2d(1.0f, 1.0f); glVertex3f(-0.5f, 2.0f, 0.5f);
+	glTexCoord2d(1.0f, 0.0f); glVertex3f(-0.5f, 2.0f, -0.5f);
+
+	// face baixo
+	glTexCoord2d(0.0f, 0.0f); glVertex3f(-0.5f, -0.5f, -0.5f);
+	glTexCoord2d(0.0f, 1.0f); glVertex3f(0.5f, -0.5f, -0.5f);
+	glTexCoord2d(1.0f, 1.0f); glVertex3f(0.5f, -0.5f, 0.5f);
+	glTexCoord2d(1.0f, 0.0f); glVertex3f(-0.5f, -0.5f, 0.5f);
+
+	// face cima
+	glTexCoord2d(0.0f, 0.0f); glVertex3f(-0.5f, 2.0f, 0.5f);
+	glTexCoord2d(0.0f, 1.0f); glVertex3f(0.5f, 2.0f, 0.5f);
+	glTexCoord2d(1.0f, 1.0f); glVertex3f(0.5f, 2.0f, -0.5f);
+	glTexCoord2d(1.0f, 0.0f); glVertex3f(-0.5f, 2.0f, -0.5f);
+
 	glEnd();
 }
