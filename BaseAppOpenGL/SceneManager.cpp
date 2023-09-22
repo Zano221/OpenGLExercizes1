@@ -62,9 +62,9 @@ void CSceneManager::ChangeScene(unsigned int _uiCurrentScene)
 	case 3:
 		this->Scene = new CScene3();
 		break;
-	/*case 4:
+	case 4:
 		this->Scene = new CScene4();
-		break;*/
+		break;
 
 
 	}

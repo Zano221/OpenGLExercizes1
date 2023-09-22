@@ -1,8 +1,6 @@
-#include "Scene3.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include "Scene4.h"
 
-CScene3::CScene3()
+CScene4::CScene4()
 {
 	pCamera = NULL;
 	pTexto = NULL;
@@ -31,13 +29,8 @@ CScene3::CScene3()
 
 	// Carrega todas as texturas
 	pTextures = new CTexture();	
-	pTextures->CreateTextureMipMap(0, "../Scene3/CRATE.BMP");
-	pTextures->CreateTextureMipMap(1, "../Scene3/grama.BMP");
-	pTextures->CreateTextureMipMap(2, "../Scene3/parede.BMP");
-	pTextures->CreateTextureMipMap(3, "../Scene3/paredejanela.BMP");
-	pTextures->CreateTextureMipMap(4, "../Scene3/paredeporta.BMP");
-	pTextures->CreateTextureMipMap(5, "../Scene3/R1.JPG");
-	pTextures->CreateTextureMipMap(69, "../Scene1/TriangleFaces.BMP");
+	pTextures->CreateTextureMipMap(0, "../Scene1/CRATE.BMP");
+	pTextures->CreateTextureMipMap(1, "../Scene1/TriangleFaces.BMP");
 
 
 
@@ -54,7 +47,7 @@ CScene3::CScene3()
 }
 
 
-CScene3::~CScene3(void)
+CScene4::~CScene4(void)
 {
 	if (pTexto)
 	{
@@ -84,7 +77,7 @@ CScene3::~CScene3(void)
 
 
 
-int CScene3::DrawGLScene(void)	// Função que desenha a cena
+int CScene4::DrawGLScene(void)	// Função que desenha a cena
 {
 	// Get FPS
 	if (GetTickCount() - ulLastFPS >= 1000)	// When A Second Has Passed...
@@ -122,32 +115,24 @@ int CScene3::DrawGLScene(void)	// Função que desenha a cena
 	
 	glColor4ub(255, 255, 255, 255);
 
+	// Habilita texturização
 	glEnable(GL_TEXTURE_2D);
 
+	// Desenha Cubo
+	// Seta a textura atual
+	pTextures->ApplyTexture(0);
 	glPushMatrix();
+	glTranslatef(-2.0f, 0.0f, 0.0f);
+	DrawCube();
+	glPopMatrix();	
 
+	// Desenha Pirâmide
 	pTextures->ApplyTexture(1);
-
-	glBegin(GL_QUADS);
-	glTexCoord2d(0.0f, 0.0f); glVertex3f(-50.0f, 0.0f, -50.0f);
-	glTexCoord2d(50.0f, 0.0f); glVertex3f(50.0f, 0.0f, -50.0f);
-	glTexCoord2d(50.0f, 50.0f); glVertex3f(50.0f, 0.0f, 50.0f);
-	glTexCoord2d(0.0f, 50.0f); glVertex3f(-50.0f, 0.0f, 50.0f);
-	glEnd();
-
-	glPopMatrix();
-	
-
-	///////// DESENHAR A CASA ///////
 	glPushMatrix();
-		DrawHouse(3.0f);	
+	glTranslatef(2.0f, 0.0f, 0.0f);
+	DrawPyramid();
 	glPopMatrix();
 
-	glPushMatrix();
-		glTranslatef(5.0f, 0.5f, 7.0f);
-		pTextures->ApplyTexture(31);
-		DrawCube();
-	glPopMatrix();
 
 	glDisable(GL_TEXTURE_2D);
 
@@ -218,7 +203,7 @@ int CScene3::DrawGLScene(void)	// Função que desenha a cena
 
 
 
-void CScene3::MouseMove(void) // Tratamento de movimento do mouse
+void CScene4::MouseMove(void) // Tratamento de movimento do mouse
 {
 	// Realiza os cálculos de rotação da visão do Player (através das coordenadas
 	// X do mouse.
@@ -240,7 +225,7 @@ void CScene3::MouseMove(void) // Tratamento de movimento do mouse
 	pCamera->rotateLoc(-fDeltaY, 1.0f, 0.0f, 0.0f);
 }
 
-void CScene3::KeyPressed(void) // Tratamento de teclas pressionadas
+void CScene4::KeyPressed(void) // Tratamento de teclas pressionadas
 {
 
 	// Verifica se a tecla 'W' foi pressionada e move o Player para frente
@@ -293,7 +278,7 @@ void CScene3::KeyPressed(void) // Tratamento de teclas pressionadas
 
 }
 
-void CScene3::KeyDownPressed(WPARAM	wParam) // Tratamento de teclas pressionadas
+void CScene4::KeyDownPressed(WPARAM	wParam) // Tratamento de teclas pressionadas
 {
 	switch (wParam)
 	{
@@ -313,7 +298,7 @@ void CScene3::KeyDownPressed(WPARAM	wParam) // Tratamento de teclas pressionadas
 }
 
 //	Cria um grid horizontal ao longo dos eixos X e Z
-void CScene3::Draw3DSGrid(float width, float length)
+void CScene4::Draw3DSGrid(float width, float length)
 {
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -339,7 +324,7 @@ void CScene3::Draw3DSGrid(float width, float length)
 
 
 
-void CScene3::DrawAxis()
+void CScene4::DrawAxis()
 {
 	glPushMatrix();
 	glTranslatef(0.0f, 0.0f, 0.0f);
@@ -363,7 +348,7 @@ void CScene3::DrawAxis()
 }
 
 
-void CScene3::DrawCube()
+void CScene4::DrawCube()
 {
 	glBegin(GL_QUADS);
 	// face frente
@@ -406,7 +391,7 @@ void CScene3::DrawCube()
 }
 
 
-void CScene3::DrawPyramid()
+void CScene4::DrawPyramid()
 {
 	glBegin(GL_TRIANGLES);
 
@@ -429,129 +414,5 @@ void CScene3::DrawPyramid()
 	glTexCoord2f(0.53f, 0.56f); glVertex3f(-0.5f, -0.5f, -0.5f);
 	glTexCoord2f(0.93f, 0.56f); glVertex3f(-0.5f, -0.5f, 0.5f);
 	glTexCoord2f(0.73f, 0.9f); glVertex3f(0.0f, 0.5f, 0.0f);
-	glEnd();
-}
-
-void CScene3::DrawHouse(float size_house) {
-
-	//Parede da direita
-
-	pTextures->ApplyTexture(3);
-	glBegin(GL_QUADS);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.5f * size_house, 0.0f * size_house, 0.0f * size_house);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.5f * size_house, 0.0f * size_house, 1.0f * size_house);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.5f * size_house, 1.0f * size_house, 1.0f * size_house);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.5f * size_house, 1.0f * size_house, 0.0f * size_house);
-	glEnd();
-
-	pTextures->ApplyTexture(2);
-	glBegin(GL_QUADS);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.5f * size_house, 0.0f * size_house, -1.0f * size_house);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.5f * size_house, 0.0f * size_house, 0.0f * size_house);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.5f * size_house, 1.0f * size_house, 0.0f * size_house);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.5f * size_house, 1.0f * size_house, -1.0f * size_house);
-	glEnd();
-
-
-	pTextures->ApplyTexture(2);
-	glBegin(GL_TRIANGLES);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.5f * size_house, 1.0f * size_house, -1.0f * size_house);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.5f * size_house, 1.0f * size_house, 1.0f * size_house);
-		glTexCoord2f(0.5f, 1.0f); glVertex3f(-1.5f * size_house, 1.5f * size_house, 0.0f * size_house);
-	glEnd();
-
-	// Frente
-
-	pTextures->ApplyTexture(3);
-	glBegin(GL_QUADS);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.5f * size_house, 0.0f * size_house, 1.0f * size_house);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-0.5f * size_house, 0.0f * size_house, 1.0f * size_house);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-0.5f * size_house, 1.0f * size_house, 1.0f * size_house);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.5f * size_house, 1.0f * size_house, 1.0f * size_house);
-	glEnd();
-
-	pTextures->ApplyTexture(4);
-	glBegin(GL_QUADS);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-0.5f * size_house, 0.0f * size_house, 1.0f * size_house);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(0.5f * size_house, 0.0f * size_house, 1.0f * size_house);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(0.5f * size_house, 1.0f * size_house, 1.0f * size_house);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-0.5f * size_house, 1.0f * size_house, 1.0f * size_house);
-	glEnd();
-
-	pTextures->ApplyTexture(2);
-	glBegin(GL_QUADS);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(0.5f * size_house, 0.0f * size_house, 1.0f * size_house);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(1.5f * size_house, 0.0f * size_house, 1.0f * size_house);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(1.5f * size_house, 1.0f * size_house, 1.0f * size_house);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(0.5f * size_house, 1.0f * size_house, 1.0f * size_house);
-	glEnd();
-
-	// Parede da esquerda
-
-	pTextures->ApplyTexture(3);
-	glBegin(GL_QUADS);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(1.5f * size_house, 0.0f * size_house, 0.0f * size_house);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(1.5f * size_house, 0.0f * size_house, 1.0f * size_house);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(1.5f * size_house, 1.0f * size_house, 1.0f * size_house);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(1.5f * size_house, 1.0f * size_house, 0.0f * size_house);
-	glEnd();
-
-	pTextures->ApplyTexture(2);
-	glBegin(GL_QUADS);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(1.5f * size_house, 0.0f * size_house, -1.0f * size_house);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(1.5f * size_house, 0.0f * size_house, 0.0f * size_house);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(1.5f * size_house, 1.0f * size_house, 0.0f * size_house);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(1.5f * size_house, 1.0f * size_house, -1.0f * size_house);
-	glEnd();
-
-	pTextures->ApplyTexture(2);
-	glBegin(GL_TRIANGLES);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(1.5f * size_house, 1.0f * size_house, -1.0f * size_house);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(1.5f * size_house, 1.0f * size_house, 1.0f * size_house);
-	glTexCoord2f(0.5f, 1.0f); glVertex3f(1.5f * size_house, 1.5f * size_house, 0.0f * size_house);
-	glEnd();
-
-	// Tras
-
-	pTextures->ApplyTexture(2);
-	glBegin(GL_QUADS);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.5f * size_house, 0.0f * size_house, -1.0f * size_house);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-0.5f * size_house, 0.0f * size_house, -1.0f * size_house);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-0.5f * size_house, 1.0f * size_house, -1.0f * size_house);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.5f * size_house, 1.0f * size_house, -1.0f * size_house);
-	glEnd();
-
-	pTextures->ApplyTexture(3);
-	glBegin(GL_QUADS);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-0.5f * size_house, 0.0f * size_house, -1.0f * size_house);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(0.5f * size_house, 0.0f * size_house, -1.0f * size_house);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(0.5f * size_house, 1.0f * size_house, -1.0f * size_house);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-0.5f * size_house, 1.0f * size_house, -1.0f * size_house);
-	glEnd();
-
-	pTextures->ApplyTexture(4);
-	glBegin(GL_QUADS);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(0.5f * size_house, 0.0f * size_house, -1.0f * size_house);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(1.5f * size_house, 0.0f * size_house, -1.0f * size_house);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(1.5f * size_house, 1.0f * size_house, -1.0f * size_house);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(0.5f * size_house, 1.0f * size_house, -1.0f * size_house);
-	glEnd();
-
-	// Telhado
-
-	pTextures->ApplyTexture(5);
-	glBegin(GL_QUADS);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(1.7f * size_house, 0.9f * size_house, 1.2f * size_house);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.7f * size_house, 0.9f * size_house, 1.2f * size_house);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.7f * size_house, 1.5f * size_house, 0.0f * size_house);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(1.7f * size_house, 1.5f * size_house, 0.0f * size_house);
-	glEnd();
-
-	pTextures->ApplyTexture(5);
-	glBegin(GL_QUADS);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.7f * size_house, 1.5f * size_house, 0.0f * size_house);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(1.7f * size_house, 1.5f * size_house, 0.0f * size_house);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(1.7f * size_house, 0.9f * size_house, -1.2f * size_house);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.7f * size_house, 0.9f * size_house, -1.2f * size_house);
 	glEnd();
 }

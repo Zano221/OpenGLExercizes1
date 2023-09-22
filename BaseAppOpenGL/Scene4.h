@@ -8,11 +8,11 @@
 #include <glm/glm.hpp>
 #include <vector>
 
-class CScene3 : public CSceneBaseClass
+class CScene4 : public CSceneBaseClass
 {
 public:
-	CScene3();
-	~CScene3(void);
+	CScene4();
+	~CScene4(void);
 
 
 	virtual void MouseMove(void);					// Tratamento de movimento do mouse
@@ -25,7 +25,6 @@ public:
 
 	void DrawCube();
 	void DrawPyramid();
-	void DrawHouse(float size_house);
 
 private:
 
