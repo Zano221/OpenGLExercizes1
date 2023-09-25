@@ -118,6 +118,19 @@ int CScene4::DrawGLScene(void)	// Função que desenha a cena
 	// Habilita texturização
 	glEnable(GL_TEXTURE_2D);
 
+	glPushMatrix();
+
+	pTextures->ApplyTexture(1);
+
+	glBegin(GL_QUADS);
+		glTexCoord2d(0.0f, 0.0f); glVertex3f(-50.0f, 0.0f, -50.0f);
+		glTexCoord2d(50.0f, 0.0f); glVertex3f(50.0f, 0.0f, -50.0f);
+		glTexCoord2d(50.0f, 50.0f); glVertex3f(50.0f, 0.0f, 50.0f);
+		glTexCoord2d(0.0f, 50.0f); glVertex3f(-50.0f, 0.0f, 50.0f);
+	glEnd();
+
+	glPopMatrix();
+
 	// Desenha Cubo
 	// Seta a textura atual
 	pTextures->ApplyTexture(0);
@@ -415,4 +428,49 @@ void CScene4::DrawPyramid()
 	glTexCoord2f(0.93f, 0.56f); glVertex3f(-0.5f, -0.5f, 0.5f);
 	glTexCoord2f(0.73f, 0.9f); glVertex3f(0.0f, 0.5f, 0.0f);
 	glEnd();
+}
+
+void CScene4::OpenFile() {
+	// Open the file
+	ifstream file("../Scene4/Casa.txt");
+	if (!file.is_open()) {
+		cerr << "Failed to open the file." << endl;
+		return;
+	}
+
+	while (true) { 
+		Triang triang;
+		char comma;
+		if (!(file >> triang.x >> comma >> triang.y >> comma >> triang.z >> comma >> triang.u >> comma >> triang.v >> comma)) {
+			break;
+		}
+
+		// Check for errors or end of file
+		if (file.fail()) {
+			break;
+		}
+
+		// Push the triang into the vector
+		triangulos.push_back(triang);
+	}
+
+	// Read data line by line
+	//while (!file.eof()) {
+	//	Triang triang;
+	//	char comma;
+	//	file >> triang.x >> comma >> triang.y >> comma >> triang.z >> comma >> triang.u >> comma >> triang.v >> comma;
+
+	//	// Check for errors or end of file
+	//	if (file.fail()) {
+	//		break;
+	//	}
+
+	//	// Push the triang into the vector
+	//	triangulos.push_back(triang);
+	//}
+
+	// Close the file
+	file.close();
+
+	houseDrawed = true;
 }

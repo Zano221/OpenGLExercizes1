@@ -129,10 +129,10 @@ int CScene3::DrawGLScene(void)	// Função que desenha a cena
 	pTextures->ApplyTexture(1);
 
 	glBegin(GL_QUADS);
-	glTexCoord2d(0.0f, 0.0f); glVertex3f(-50.0f, 0.0f, -50.0f);
-	glTexCoord2d(50.0f, 0.0f); glVertex3f(50.0f, 0.0f, -50.0f);
-	glTexCoord2d(50.0f, 50.0f); glVertex3f(50.0f, 0.0f, 50.0f);
-	glTexCoord2d(0.0f, 50.0f); glVertex3f(-50.0f, 0.0f, 50.0f);
+		glTexCoord2d(0.0f, 0.0f); glVertex3f(-50.0f, 0.0f, -50.0f);
+		glTexCoord2d(50.0f, 0.0f); glVertex3f(50.0f, 0.0f, -50.0f);
+		glTexCoord2d(50.0f, 50.0f); glVertex3f(50.0f, 0.0f, 50.0f);
+		glTexCoord2d(0.0f, 50.0f); glVertex3f(-50.0f, 0.0f, 50.0f);
 	glEnd();
 
 	glPopMatrix();
