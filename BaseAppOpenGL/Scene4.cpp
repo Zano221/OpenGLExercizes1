@@ -28,9 +28,8 @@ CScene4::CScene4()
 	fRenderPosY = 0.0f;
 
 	// Carrega todas as texturas
-	pTextures = new CTexture();	
-	pTextures->CreateTextureMipMap(0, "../Scene1/CRATE.BMP");
-	pTextures->CreateTextureMipMap(1, "../Scene1/TriangleFaces.BMP");
+	pTextures = new CTexture();
+	pTextures->CreateTextureClamp(0, "../Scene4/CasaTex.jpg");
 
 
 
@@ -40,9 +39,8 @@ CScene4::CScene4()
 	fPosY = 0.0f;
 	fPosZ = 0.0f;
 
-
-	for (int i = 0; i < 38; i++)
-		faceColor[i] = { (rand() % 255), (rand() % 255), (rand() % 255) };
+	iVexFaces = 0;
+	bHouseLoaded = false;
 
 }
 
@@ -120,35 +118,28 @@ int CScene4::DrawGLScene(void)	// Função que desenha a cena
 
 	glPushMatrix();
 
-	pTextures->ApplyTexture(1);
-
-	glBegin(GL_QUADS);
-		glTexCoord2d(0.0f, 0.0f); glVertex3f(-50.0f, 0.0f, -50.0f);
-		glTexCoord2d(50.0f, 0.0f); glVertex3f(50.0f, 0.0f, -50.0f);
-		glTexCoord2d(50.0f, 50.0f); glVertex3f(50.0f, 0.0f, 50.0f);
-		glTexCoord2d(0.0f, 50.0f); glVertex3f(-50.0f, 0.0f, 50.0f);
-	glEnd();
-
-	glPopMatrix();
-
-	// Desenha Cubo
-	// Seta a textura atual
 	pTextures->ApplyTexture(0);
-	glPushMatrix();
-	glTranslatef(-2.0f, 0.0f, 0.0f);
-	DrawCube();
-	glPopMatrix();	
 
-	// Desenha Pirâmide
-	pTextures->ApplyTexture(1);
-	glPushMatrix();
-	glTranslatef(2.0f, 0.0f, 0.0f);
-	DrawPyramid();
-	glPopMatrix();
 
+	if (bHouseLoaded == false) {
+		LoadHouse();
+	}
+
+	for (int i = 0; i < iVexFaces; i++) {
+		glPushMatrix();
+		glBegin(GL_TRIANGLES);
+		glTranslatef(0.0f, 0.0f, 0.0f);
+
+		for (int j = 0; j < vFaces.size(); j++) {
+			glTexCoord2f(vFaces.at(j).texX, vFaces.at(j).texY);  glVertex3f(vFaces.at(j).x, vFaces.at(j).y, vFaces.at(j).z);
+		}
+
+		glEnd();
+
+		glPopMatrix();
+	}
 
 	glDisable(GL_TEXTURE_2D);
-
 
 	fRotY += 1.0f;
 	if (fRotY >= 360.0f)
@@ -430,47 +421,34 @@ void CScene4::DrawPyramid()
 	glEnd();
 }
 
-void CScene4::OpenFile() {
-	// Open the file
-	ifstream file("../Scene4/Casa.txt");
+void CScene4::LoadHouse() {
+
+
+	std::ifstream file("../Scene4/Casa.txt");
 	if (!file.is_open()) {
-		cerr << "Failed to open the file." << endl;
+		std::cerr << "ERRO N CONSEGUI ABRIR A CASA!." << std::endl;
 		return;
 	}
 
 	while (true) { 
-		Triang triang;
+		Face face;
 		char comma;
-		if (!(file >> triang.x >> comma >> triang.y >> comma >> triang.z >> comma >> triang.u >> comma >> triang.v >> comma)) {
+		if (file.fail() || !(file >> 
+			face.x >> comma >> 
+			face.y >> comma >> 
+			face.z >> comma >> 
+			face.texX >> comma >> 
+			face.texY >> comma)) {
+
 			break;
 		}
-
-		// Check for errors or end of file
-		if (file.fail()) {
-			break;
+		else {
+			iVexFaces++;
 		}
 
-		// Push the triang into the vector
-		triangulos.push_back(triang);
+		vFaces.push_back(face);
 	}
 
-	// Read data line by line
-	//while (!file.eof()) {
-	//	Triang triang;
-	//	char comma;
-	//	file >> triang.x >> comma >> triang.y >> comma >> triang.z >> comma >> triang.u >> comma >> triang.v >> comma;
-
-	//	// Check for errors or end of file
-	//	if (file.fail()) {
-	//		break;
-	//	}
-
-	//	// Push the triang into the vector
-	//	triangulos.push_back(triang);
-	//}
-
-	// Close the file
 	file.close();
-
-	houseDrawed = true;
+	bHouseLoaded = true;
 }

@@ -7,6 +7,12 @@
 #include "VertexData.h"
 #include <glm/glm.hpp>
 #include <vector>
+#include <iostream>
+#include <fstream>
+
+struct Face {
+	float x, y, z, texX, texY;
+};
 
 class CScene4 : public CSceneBaseClass
 {
@@ -25,7 +31,7 @@ public:
 
 	void DrawCube();
 	void DrawPyramid();
-	void OpenFile();
+	void LoadHouse();
 
 private:
 
@@ -64,6 +70,10 @@ private:
 	unsigned char R;
 	unsigned char G;
 	unsigned char B;
+
+	int iVexFaces;
+	vector<Face> vFaces;
+	bool bHouseLoaded;
 
 };
 
